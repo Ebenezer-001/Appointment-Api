@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: appointment_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: appointment_db
+    ports:
+      - '5433:5432'
+    volumes:
+      - appointment_postgres_data:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: appointment_api
+    restart: always
+    ports:
+      - '4000:4000'
+    environment:
+      PORT: 4000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: appointment_db
+      JWT_SECRET: super_secret_change_this
+      JWT_EXPIRES_IN: 1d
+    depends_on:
+      - postgres
+
+volumes:
+  appointment_postgres_data:
