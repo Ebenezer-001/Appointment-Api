@@ -23,14 +23,17 @@ import { StaffServicesModule } from './staff-services/staff-services.module';
     }),
 
       TypeOrmModule.forRootAsync({
-    inject: [ConfigService],
-    useFactory: (config: ConfigService) => ({
-      type: 'postgres',
-      url: config.get<string>('DATABASE_URL'),
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
-  }),   
+  inject: [ConfigService],
+  useFactory: (config: ConfigService) => ({
+    type: 'postgres',
+    url: config.get<string>('DATABASE_URL'),
+    autoLoadEntities: true,
+    synchronize: true,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  }),
+}),
 
     BusinessesModule,
     UsersModule,
