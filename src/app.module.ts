@@ -29,6 +29,7 @@ import { StaffServicesModule } from './staff-services/staff-services.module';
     url: config.get<string>('DATABASE_URL'),
     autoLoadEntities: true,
     synchronize: true,
+
     ssl: {
       rejectUnauthorized: false,
     },
