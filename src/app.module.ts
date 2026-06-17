@@ -22,18 +22,19 @@ import { StaffServicesModule } from './staff-services/staff-services.module';
       isGlobal: true,
     }),
 
-      TypeOrmModule.forRootAsync({
-  inject: [ConfigService],
-  useFactory: (config: ConfigService) => ({
-    type: 'postgres',
-    url: config.get<string>('DATABASE_URL'),
-    autoLoadEntities: true,
-    synchronize: true,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  }),
-}),
+     TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: 'postgres',
+        host: config.get<string>('DB_HOST'),
+        port: Number(config.get<string>('DB_PORT')),
+        username: config.get<string>('DB_USERNAME'),
+        password: config.get<string>('DB_PASSWORD'),
+        database: config.get<string>('DB_NAME'),
+        autoLoadEntities: true,
+        synchronize: true, // use migrations later for production
+      }),
+    }),
 
     BusinessesModule,
     UsersModule,
